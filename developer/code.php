@@ -89,13 +89,13 @@ switch ($case) {
       if($_FILES['img-perfil']['tmp_name']!=""){
         $file=$_FILES["img-perfil"]['name'];
         $extension= explode(".",$file) ;
-        $url="../assets/fotoperfil/".$_GET['nombphoto'].".".$extension[1];                       
-        $urlFoto='assets/fotoperfil/'.$_GET['nombphoto'].".".$extension[1];
+        $url="../assets/".$_GET['nombphoto'].".".$extension[1];                       
+        $urlFoto='assets/'.$_GET['nombphoto'].".".$extension[1];
 
         if (move_uploaded_file($_FILES['img-perfil']['tmp_name'],$url)) {
-          $sql="UPDATE usuarios SET foto='". $urlFoto."' WHERE codigo_usu='".$_SESSION['CA_codigo_usuCA']."'"; 
-          query($sql);
-          $_SESSION['CA_foto']=$urlFoto;
+          // $sql="UPDATE usuarios SET foto='". $urlFoto."' WHERE codigo_usu='".$_SESSION['CA_codigo_usuCA']."'"; 
+          // query($sql);
+          // $_SESSION['CA_foto']=$urlFoto;
           $json = json_encode(array("success" => true, "mensaje"=>"Foto de perfil actualizada exitosamente.")); 
         }
 
