@@ -11,5 +11,6 @@ RewriteRule ^Zip  developer/generatezip.php  [nc,qsa]
 RewriteRule ^ThisZip  developer/generatezipselect.php  [nc,qsa]
 RewriteRule ^Delete  developer/deletefile.php  [nc,qsa]
 RewriteRule ^Upload  developer/uploadfile.php  [nc,qsa]
+RewriteRule ^ImageResource/  assets/  [nc,qsa]
 RewriteRule ^Open/(\w+)/?$  developer/returnfiles.php?lkg=$1 [nc,qsa]
 
