@@ -114,11 +114,41 @@ switch ($case) {
                             );
         $datarow = DataRow($insert,$paramsInsert);
         if($datarow != -1){
-          $json = json_encode(array("success" => true, "id" => $datarow["id_us"], "accessToken" => "1231565651"));
+          $objDateTime = new DateTime('NOW');
+          $json = json_encode(array("success" => true, "id" => $datarow["id_us"], "accessToken" => sha1($datarow["id_us"].$objDateTime)));
         }else{
           $json = json_encode(array("success" => false,"message" => "Error al crear usuario"));
         }
       }
+    break;
+
+    case 'Login':
+
+      $sqlEmail = "SELECT id_us, nameuser, email, pass, cellphone, name_complete, id_device FROM usuarios WHERE email = :email";
+      $rowEmail = row($sqlEmail, array(':email' => $email));
+
+      if($rowEmail != ""){
+        
+        if($rowEmail["pass"] == sha1($pass)){
+          $objDateTime = new DateTime('NOW');
+          $json = json_encode(array(
+            "success" => true, 
+            "accessToken" => sha1($rowEmail["id_us"]."".$objDateTime->format('c')),
+            "id" => $rowEmail["id_us"], 
+            "nameuser" => $rowEmail["nameuser"], 
+            "email" => $rowEmail["email"], 
+            "cellphone" => $rowEmail["cellphone"], 
+            "name_complete" => $rowEmail["name_complete"], 
+            "id_device" => $rowEmail["id_device"], 
+          ));
+        }else{
+          $json = json_encode(array("success" => false,"message" => "Contraseña incorrecta."));
+        }
+
+      }else{
+        $json = json_encode(array("success" => false,"message" => "El Correo electrónico ingresado no existe."));
+      }
+      
     break;
 
 
