@@ -36,22 +36,22 @@ if(isset($_GET['case'])){
 
 // Variables de get
 
-if(isset($_GET['estado'])){
-  $estado = $_GET['estado'];
-}else{
-  $estado = '';
-}
-if(isset($_GET['nombre'])){
-  $nombre = $_GET['nombre'];
-}else{
-  $nombre = '';
-}
-if(isset($_GET['codperfil'])){
-  $codperfil = $_GET['codperfil'];
-}else{
-  $codperfil = '';
-}
 
+if(isset($_POST['nameuser'])){
+  $nameuser = $_POST['nameuser'];
+}
+if(isset($_POST['email'])){
+  $email = $_POST['email'];
+}
+if(isset($_POST['pass'])){
+  $pass = $_POST['pass'];
+}
+if(isset($_POST['cellphone'])){
+  $cellphone = $_POST['cellphone'];
+}
+if(isset($_POST['name_complete'])){
+  $name_complete = $_POST['name_complete'];
+}
 
 $createtable = array(
   'data' => array()
@@ -79,12 +79,34 @@ switch ($case) {
       $table = table($sql);
       $json = json_encode($table);
     break;
+
     case 'prueba':
       $json = json_encode(array('success' => true ));
     break;
 
 
     /************************ procesos para miperfil.php **************************/
+
+    case 'createAccount':
+
+      $insert = "INSERT INTO usuarios (nameuser, email, pass, cellphone, name_complete) VALUES (:nameuser, :email, :pass, :cellphone, :name_complete) RETURNING id_us";
+      $paramsInsert = array(
+                            ':nameuser' => $nameuser,
+                            ':email' => $email, 
+                            ':pass' => $pass,
+                            ':cellphone' => $cellphone,
+                            ':name_complete' => $name_complete
+                          );
+      $datarow = DataRow($insert,$params);
+
+      if($datarow != -1){
+        $json = json_encode(array("success" => true, "id_usu" => $datarow["id_us"]));
+      }else{
+        $json = json_encode(array("success"=>false,"mensaje" => "Error al crear usuario"));
+      }
+    break;
+
+
     case 'uploadFotoPerfil':
       if($_FILES['img-perfil']['tmp_name']!=""){
         $file=$_FILES["img-perfil"]['name'];
@@ -139,6 +161,8 @@ switch ($case) {
         }
       }
     break;
+
+    
     
   /************************  FIN procesos para miperfil.php ****************************/
 
