@@ -102,7 +102,7 @@ switch ($case) {
       if($datarow != -1){
         $json = json_encode(array("success" => true, "id_usu" => $datarow["id_us"]));
       }else{
-        $json = json_encode(array("success"=>false,"mensaje" => "Error al crear usuario"));
+        $json = json_encode(array("success" => false,"message" => "Error al crear usuario"));
       }
     break;
 
