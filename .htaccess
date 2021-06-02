@@ -2,8 +2,6 @@
 Options +FollowSymlinks
 RewriteEngine on
 
-php_value upload_max_filesize 30M
-
 # map neat URL to internal URL
 RewriteRule ^Lopersa/(\w+)/?$  developer/code.php?case=$1 [nc,qsa]
 RewriteRule ^clogin/(\w+)/?$  developer/codelogin.php?case=$1 [nc,qsa]
@@ -16,3 +14,6 @@ RewriteRule ^Upload  developer/uploadfile.php  [nc,qsa]
 RewriteRule ^ImageResource/  assets/  [nc,qsa]
 RewriteRule ^Open/(\w+)/?$  developer/returnfiles.php?lkg=$1 [nc,qsa]
 
+php_value memory_limit 30M
+php_value post_max_size 100M
+php_value upload_max_filesize 30M
