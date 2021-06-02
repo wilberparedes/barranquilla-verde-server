@@ -96,7 +96,7 @@ switch ($case) {
           // $sql="UPDATE usuarios SET foto='". $urlFoto."' WHERE codigo_usu='".$_SESSION['CA_codigo_usuCA']."'"; 
           // query($sql);
           // $_SESSION['CA_foto']=$urlFoto;
-          $json = json_encode(array("success" => true, "mensaje"=>"Foto de perfil actualizada exitosamente.")); 
+          $json = json_encode(array("success" => true, "mensaje"=>"Foto de perfil actualizada exitosamente.", "url" => $urlFoto)); 
         }
 
       }else{
