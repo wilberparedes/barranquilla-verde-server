@@ -100,7 +100,8 @@ switch ($case) {
         }
 
       }else{
-      $json = json_encode(array("success" =>false,"message"=>"Campo vacio." .print_r($_FILES['img-perfil'])));
+        print_r($_FILES['img-perfil'])
+      $json = json_encode(array("success" =>false,"message"=>"Campo vacio." ));
       }
     break;
 
