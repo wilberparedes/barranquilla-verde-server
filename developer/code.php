@@ -114,7 +114,7 @@ switch ($case) {
                             );
         $datarow = DataRow($insert,$paramsInsert);
         if($datarow != -1){
-          $json = json_encode(array("success" => true, "id_usu" => $datarow["id_us"]));
+          $json = json_encode(array("success" => true, "id" => $datarow["id_us"], "accessToken" => "1231565651"));
         }else{
           $json = json_encode(array("success" => false,"message" => "Error al crear usuario"));
         }
