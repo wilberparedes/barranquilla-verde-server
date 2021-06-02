@@ -38,10 +38,10 @@ if(isset($_GET['case'])){
 
 
 if(isset($_POST['nameuser'])){
-  $nameuser = $_POST['nameuser'];
+  $nameuser = strtolower($_POST['nameuser']);
 }
 if(isset($_POST['email'])){
-  $email = $_POST['email'];
+  $email = strtolower($_POST['email']);
 }
 if(isset($_POST['pass'])){
   $pass = $_POST['pass'];
@@ -50,7 +50,7 @@ if(isset($_POST['cellphone'])){
   $cellphone = $_POST['cellphone'];
 }
 if(isset($_POST['name_complete'])){
-  $name_complete = $_POST['name_complete'];
+  $name_complete = ucwords(strtolower($_POST['name_complete']));
 }
 if(isset($_POST['id_device'])){
   $id_device = $_POST['id_device'];
