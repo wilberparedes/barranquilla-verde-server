@@ -96,7 +96,7 @@ switch ($case) {
       $paramsInsert = array(
                             ':nameuser' => $nameuser,
                             ':email' => $email, 
-                            ':pass' => $pass,
+                            ':pass' => sha1($pass),
                             ':cellphone' => $cellphone,
                             ':name_complete' => $name_complete,
                             ':id_device' => $id_device,
