@@ -52,6 +52,9 @@ if(isset($_POST['cellphone'])){
 if(isset($_POST['name_complete'])){
   $name_complete = $_POST['name_complete'];
 }
+if(isset($_POST['id_device'])){
+  $id_device = $_POST['id_device'];
+}
 
 $createtable = array(
   'data' => array()
@@ -89,15 +92,16 @@ switch ($case) {
 
     case 'createAccount':
 
-      $insert = "INSERT INTO usuarios (nameuser, email, pass, cellphone, name_complete) VALUES (:nameuser, :email, :pass, :cellphone, :name_complete) RETURNING id_us";
+      $insert = "INSERT INTO usuarios (nameuser, email, pass, cellphone, name_complete, id_device) VALUES (:nameuser, :email, :pass, :cellphone, :name_complete, :id_device) RETURNING id_us";
       $paramsInsert = array(
                             ':nameuser' => $nameuser,
                             ':email' => $email, 
                             ':pass' => $pass,
                             ':cellphone' => $cellphone,
-                            ':name_complete' => $name_complete
+                            ':name_complete' => $name_complete,
+                            ':id_device' => $id_device,
                           );
-      $datarow = DataRow($insert,$params);
+      $datarow = DataRow($insert,$paramsInsert);
 
       if($datarow != -1){
         $json = json_encode(array("success" => true, "id_usu" => $datarow["id_us"]));
