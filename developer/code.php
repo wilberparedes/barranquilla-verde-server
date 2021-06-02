@@ -115,7 +115,7 @@ switch ($case) {
         $datarow = DataRow($insert,$paramsInsert);
         if($datarow != -1){
           $objDateTime = new DateTime('NOW');
-          $json = json_encode(array("success" => true, "id" => $datarow["id_us"], "accessToken" => sha1($datarow["id_us"].$objDateTime)));
+          $json = json_encode(array("success" => true, "id" => $datarow["id_us"], "accessToken" => sha1($rowEmail["id_us"]."".$objDateTime->format('c')) ));
         }else{
           $json = json_encode(array("success" => false,"message" => "Error al crear usuario"));
         }
@@ -130,6 +130,11 @@ switch ($case) {
       if($rowEmail != ""){
         
         if($rowEmail["pass"] == sha1($pass)){
+
+          $sql="UPDATE usuarios SET id_device=:id_device WHERE id_us= :idus"; 
+          query($sql, array(':id_device' => $id_device, ':idus' => $rowEmail["id_us"]));
+
+
           $objDateTime = new DateTime('NOW');
           $json = json_encode(array(
             "success" => true, 
@@ -139,7 +144,7 @@ switch ($case) {
             "email" => $rowEmail["email"], 
             "cellphone" => $rowEmail["cellphone"], 
             "name_complete" => $rowEmail["name_complete"], 
-            "id_device" => $rowEmail["id_device"], 
+            "id_device" => $id_device, 
           ));
         }else{
           $json = json_encode(array("success" => false,"message" => "Contraseña incorrecta."));
