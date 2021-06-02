@@ -92,21 +92,32 @@ switch ($case) {
 
     case 'createAccount':
 
-      $insert = "INSERT INTO usuarios (nameuser, email, pass, cellphone, name_complete, id_device) VALUES (:nameuser, :email, :pass, :cellphone, :name_complete, :id_device) RETURNING id_us";
-      $paramsInsert = array(
-                            ':nameuser' => $nameuser,
-                            ':email' => $email, 
-                            ':pass' => sha1($pass),
-                            ':cellphone' => $cellphone,
-                            ':name_complete' => $name_complete,
-                            ':id_device' => $id_device,
-                          );
-      $datarow = DataRow($insert,$paramsInsert);
+      $sqlEmail = "SELECT email FROM usuarios WHERE email = :email";
+      $rowEmail = row($sqlEmail, array(':email' => $email));
 
-      if($datarow != -1){
-        $json = json_encode(array("success" => true, "id_usu" => $datarow["id_us"]));
+      $sqlCellphone = "SELECT cellphone FROM usuarios WHERE cellphone = :cellphone";
+      $rowCellphone = row($sqlCellphone, array(':cellphone' => $cellphone));
+
+      if($rowEmail != ""){
+        $json = json_encode(array("success" => false, "message" => "Ya existe un usuario registrado con el Correo electrónico ingresado."));
+      }else if( $rowCellphone != ""){
+        $json = json_encode(array("success" => false, "message" => "Ya existe un usuario registrado con el Número de teléfono ingresado."));
       }else{
-        $json = json_encode(array("success" => false,"message" => "Error al crear usuario"));
+        $insert = "INSERT INTO usuarios (nameuser, email, pass, cellphone, name_complete, id_device) VALUES (:nameuser, :email, :pass, :cellphone, :name_complete, :id_device) RETURNING id_us";
+        $paramsInsert = array(
+                              ':nameuser' => $nameuser,
+                              ':email' => $email, 
+                              ':pass' => sha1($pass),
+                              ':cellphone' => $cellphone,
+                              ':name_complete' => $name_complete,
+                              ':id_device' => $id_device,
+                            );
+        $datarow = DataRow($insert,$paramsInsert);
+        if($datarow != -1){
+          $json = json_encode(array("success" => true, "id_usu" => $datarow["id_us"]));
+        }else{
+          $json = json_encode(array("success" => false,"message" => "Error al crear usuario"));
+        }
       }
     break;
 
