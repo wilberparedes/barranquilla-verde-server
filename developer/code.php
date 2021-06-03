@@ -29,66 +29,42 @@ $mail->Subject = utf8_decode("Nuevo reporte | Barranquilla verde");
 $mail->AltBody = "";
 
 
-
 if(isset($_GET['case'])){
-    $case=$_GET['case'];
+  $case = $_GET['case'];
 }
 
-// Variables de get
-
-
+if(isset($_POST['iduser'])){
+  $iduser = $_POST['iduser'];
+}
+if(isset($_POST['idparque'])){
+  $idparque = $_POST['idparque'];
+}
+if(isset($_POST['zonanovedad'])){
+  $zonanovedad = $_POST['zonanovedad'];
+}
+if(isset($_POST['comentario'])){
+  $comentario = trim($_POST['comentario']);
+}
 if(isset($_POST['nameuser'])){
-  $nameuser = strtolower($_POST['nameuser']);
+  $nameuser = strtolower(trim($_POST['nameuser']));
 }
 if(isset($_POST['email'])){
-  $email = strtolower($_POST['email']);
+  $email = strtolower(trim($_POST['email']));
 }
 if(isset($_POST['pass'])){
-  $pass = $_POST['pass'];
+  $pass = trim($_POST['pass']);
 }
 if(isset($_POST['cellphone'])){
-  $cellphone = $_POST['cellphone'];
+  $cellphone = trim($_POST['cellphone']);
 }
 if(isset($_POST['name_complete'])){
-  $name_complete = ucwords(strtolower($_POST['name_complete']));
+  $name_complete = ucwords(strtolower(trim($_POST['name_complete'])));
 }
 if(isset($_POST['id_device'])){
   $id_device = $_POST['id_device'];
 }
 
-$createtable = array(
-  'data' => array()
-);
-
-function base64url_encode($data) {
-  return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
-}
-
 switch ($case) {
-
-    case 'viewNoti':
-      $viewNoti = "UPDATE notificaciones SET view = 0 WHERE codusuario_fk = :codigo";
-      $paramsViewNoti = array(':codigo' => $_SESSION["CA_codigo_usuCA"]);
-
-      if(query($viewNoti, $paramsViewNoti)){
-        $json =  json_encode(array('success' => true));
-      }else{
-        $json =  json_encode(array('success' => false));
-      }
-    break;
-
-    case 'loadPerfiles2':
-      $sql = "SELECT codperfil as cod, nombre_perfil as nombre, estado_perfil FROM perfil2 WHERE estado_perfil = 'on'";
-      $table = table($sql);
-      $json = json_encode($table);
-    break;
-
-    case 'prueba':
-      $json = json_encode(array('success' => true ));
-    break;
-
-
-    /************************ procesos para miperfil.php **************************/
 
     case 'createAccount':
 
@@ -134,7 +110,6 @@ switch ($case) {
           $sql="UPDATE usuarios SET id_device=:id_device WHERE id_us= :idus"; 
           query($sql, array(':id_device' => $id_device, ':idus' => $rowEmail["id_us"]));
 
-
           $objDateTime = new DateTime('NOW');
           $json = json_encode(array(
             "success" => true, 
@@ -178,6 +153,39 @@ switch ($case) {
     break;
 
 
+    case 'saveReport':
+      if($_FILES['img-perfil']['tmp_name']!=""){
+        $file=$_FILES["img-perfil"]['name'];
+        $extension= explode(".",$file) ;
+        $newnamefile = $_GET['nombphoto'].".".$extension[1];
+        $url="../assets/".$newnamefile;                       
+        $urlFoto='assets/'.$newnamefile;
+
+        if (move_uploaded_file($_FILES['img-perfil']['tmp_name'],$url)) {
+          
+          $insert = "INSERT INTO reportes (id_usuario_fk, id_parque_fk, tipo, comentario, imagen) VALUES (:iduser, :idparque, :zonanovedad, :comentario, :imagen) RETURNING id_rp";
+          $paramsInsert = array(
+                                ':iduser' => $iduser,
+                                ':idparque' => $idparque, 
+                                ':zonanovedad' => $zonanovedad,
+                                ':comentario' => $comentario,
+                                ':imagen' => $newnamefile,
+                              );
+          $datarow = DataRow($insert,$paramsInsert);
+          if($datarow != -1){
+            $json = json_encode(array("success" => true, "idrp" => $datarow["id_rp"]));
+          }else{
+            $json = json_encode(array("success" => false,"message" => "Error registrar novedad, por favor, intente de nuevo más tarde"));
+          }
+
+        }
+
+      }else{
+        $json = json_encode(array("success" =>false,"message"=> "Ocurrió un error al subir imagen, por favor, intente de nuevo", "img" => $_FILES['img-perfil'] ));
+      }
+    break;
+
+
     case 'editUsuario':
       $update = "UPDATE usuarios SET nombre = :nombre WHERE codigo_usu = :codusu";
       $params = array(':nombre' => $nombre, ':codusu'=>$_SESSION['CA_codigo_usuCA']);
@@ -211,10 +219,6 @@ switch ($case) {
         }
       }
     break;
-
-    
-    
-  /************************  FIN procesos para miperfil.php ****************************/
 
 }
 echo $json;
