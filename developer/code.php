@@ -220,6 +220,24 @@ switch ($case) {
       }
     break;
 
+    case 'LoadParques':
+      $sql = "SELECT id_prq as id, name_prq AS name, latitude, longitude, address, neighborhood, gym, soccer_field FROM parques AS prq
+      WHERE prq.state_prq = 1";
+      $table = table($sql);
+      $parquesall = array();
+      foreach ($table as $datarow => $data) {
+
+        $sql1 = "SELECT url FROM imagenes_parques
+        WHERE state_ip = 1 AND id_parque_fk = :idparque";
+        $table1 = table($sql1, array(':idparque' => $data["id"]));
+
+        array_push($parquesall, array("id" => $data["id"], "name" => $data["name"], "latitude" => $data["latitude"], "longitude" => $data["longitude"], "address" => $data["address"], "neighborhood" => $data["neighborhood"], "gym" => $data["gym"], "soccer_field" => $data["soccer_field"], "images" => $table1));
+
+      }
+
+      $json = json_encode($parquesall);
+    break;
+
 }
 echo $json;
 
