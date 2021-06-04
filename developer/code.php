@@ -21,9 +21,9 @@ $mail->Port = 587;
 // $mail->Username = "wilberparedes@gmail.com";
 // $mail->Password = "1461217arca#";
 // $mail->SetFrom('wilberparedes@gmail.com', utf8_decode('Corporación Universitaria Americana'));
-$tz_object = new DateTimeZone('America/Bogota');
+// $tz_object = new DateTimeZone('America/Bogota');
 $objDateTime = new DateTime('NOW');
-$objDateTime->setTimezone($tz_object);
+// $objDateTime->setTimezone($tz_object);
 
 $mail->Username = "wilberparedesg@gmail.com";
 $mail->Password = "1461217Arca!";
