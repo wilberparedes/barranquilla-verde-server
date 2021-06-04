@@ -22,14 +22,14 @@ $mail->Port = 587;
 // $mail->Password = "1461217arca#";
 // $mail->SetFrom('wilberparedes@gmail.com', utf8_decode('Corporación Universitaria Americana'));
 // $tz_object = new DateTimeZone('America/Bogota');
-$objDateTime = new DateTime('NOW');
+// $objDateTime = new DateTime('NOW');
 // $objDateTime->setTimezone($tz_object);
 
 $mail->Username = "wilberparedesg@gmail.com";
 $mail->Password = "1461217Arca!";
 $mail->SetFrom('wilberparedesg@gmail.com', utf8_decode('Barranquilla verde'));
 
-$mail->Subject = utf8_decode("Nuevo reporte | Barranquilla verde | ".$objDateTime->format('d/m/Y h:i a'));
+$mail->Subject = utf8_decode("Nuevo reporte | Barranquilla verde | "); //.$objDateTime->format('d/m/Y h:i a')
 $mail->AltBody = "";
 
 
@@ -177,7 +177,7 @@ switch ($case) {
                                 ':zonanovedad' => $zonanovedad,
                                 ':comentario' => $comentario,
                                 ':imagen' => $newnamefile,
-                                ':fecha' => $objDateTime->format('Y-m-d H:i:s'),
+                                ':fecha' => 'NOW()',//$objDateTime->format('Y-m-d H:i:s')
                               );
           $datarow = DataRow($insert,$paramsInsert);
           if($datarow != -1){
