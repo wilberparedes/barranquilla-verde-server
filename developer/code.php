@@ -332,15 +332,15 @@ switch ($case) {
             $mail->AddBCC("wilberparedes@gmail.com","");
 
             $mail->IsHTML(true);
-            $mail->smtpConnect(
-            array(
-              "ssl" => array(
-                  "verify_peer" => false,
-                  "verify_peer_name" => false,
-                  "allow_self_signed" => true
-              )
-            )
-            );
+            // $mail->smtpConnect(
+            // array(
+            //   "ssl" => array(
+            //       "verify_peer" => false,
+            //       "verify_peer_name" => false,
+            //       "allow_self_signed" => true
+            //   )
+            // )
+            // );
 
             if ($mail->Send()) {
               $json = json_encode(array("success" => true, "idrp" => $datarow["id_rp"]));
