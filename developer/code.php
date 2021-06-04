@@ -29,7 +29,7 @@ $mail->Username = "wilberparedesg@gmail.com";
 $mail->Password = "1461217Arca!";
 $mail->SetFrom('wilberparedesg@gmail.com', utf8_decode('Barranquilla verde'));
 
-$mail->Subject = utf8_decode("Nuevo reporte | Barranquilla verde | "); //.$objDateTime->format('d/m/Y h:i a')
+$mail->Subject = utf8_decode("Nuevo reporte | Barranquilla verde"); //.$objDateTime->format('d/m/Y h:i a')
 $mail->AltBody = "";
 
 
