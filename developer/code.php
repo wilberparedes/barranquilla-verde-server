@@ -154,35 +154,35 @@ switch ($case) {
 
 
     case 'saveReport':
-      // if($_FILES['img-perfil']['tmp_name']!=""){
-      //   $file=$_FILES["img-perfil"]['name'];
-      //   $extension= explode(".",$file) ;
-      //   $newnamefile = $_GET['nombphoto'].".".$extension[1];
-      //   $url="../assets/".$newnamefile;                       
-      //   $urlFoto='assets/'.$newnamefile;
+      if($_FILES['img-perfil']['tmp_name']!=""){
+        $file=$_FILES["img-perfil"]['name'];
+        $extension= explode(".",$file) ;
+        $newnamefile = $_GET['nombphoto'].".".$extension[1];
+        $url="../assets/".$newnamefile;                       
+        $urlFoto='assets/'.$newnamefile;
 
-      //   if (move_uploaded_file($_FILES['img-perfil']['tmp_name'],$url)) {
+        if (move_uploaded_file($_FILES['img-perfil']['tmp_name'],$url)) {
           
-      //     $insert = "INSERT INTO reportes (id_usuario_fk, id_parque_fk, tipo, comentario, imagen) VALUES (:iduser, :idparque, :zonanovedad, :comentario, :imagen) RETURNING id_rp";
-      //     $paramsInsert = array(
-      //                           ':iduser' => $iduser,
-      //                           ':idparque' => $idparque, 
-      //                           ':zonanovedad' => $zonanovedad,
-      //                           ':comentario' => $comentario,
-      //                           ':imagen' => $newnamefile,
-      //                         );
-      //     $datarow = DataRow($insert,$paramsInsert);
-      //     if($datarow != -1){
-            $json = json_encode(array("success" => true, "idrp" => 22));
-        //   }else{
-        //     $json = json_encode(array("success" => false,"message" => "Error registrar novedad, por favor, intente de nuevo más tarde"));
-        //   }
+          $insert = "INSERT INTO reportes (id_usuario_fk, id_parque_fk, tipo, comentario, imagen) VALUES (:iduser, :idparque, :zonanovedad, :comentario, :imagen) RETURNING id_rp";
+          $paramsInsert = array(
+                                ':iduser' => $iduser,
+                                ':idparque' => $idparque, 
+                                ':zonanovedad' => $zonanovedad,
+                                ':comentario' => $comentario,
+                                ':imagen' => $newnamefile,
+                              );
+          $datarow = DataRow($insert,$paramsInsert);
+          if($datarow != -1){
+            $json = json_encode(array("success" => true, "idrp" => $datarow["id_rp"]));
+          }else{
+            $json = json_encode(array("success" => false,"message" => "Error registrar novedad, por favor, intente de nuevo más tarde"));
+          }
 
-        // }
+        }
 
-      // }else{
-      //   $json = json_encode(array("success" =>false,"message"=> "Ocurrió un error al subir imagen, por favor, intente de nuevo", "img" => $_FILES['img-perfil'] ));
-      // }
+      }else{
+        $json = json_encode(array("success" =>false,"message"=> "Ocurrió un error al subir imagen, por favor, intente de nuevo", "img" => $_FILES['img-perfil'] ));
+      }
     break;
 
 
